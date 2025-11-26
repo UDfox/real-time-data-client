@@ -2,6 +2,48 @@
 
 This client provides a wrapper to connect to the `real-time-data-streaming` `WebSocket` service.
 
+## Python Client
+
+A Python implementation is also available. See [polymarket_client.py](./polymarket_client.py) for details.
+
+### Quick Start (Python)
+
+```bash
+# Install dependencies
+pip install websocket-client
+
+# Run the example
+python polymarket_client.py
+```
+
+### Python Usage Example
+
+```python
+from polymarket_client import RealTimeDataClient, ConnectionStatus
+
+def on_message(client, message):
+    print(f"Topic: {message.get('topic')}")
+    print(f"Type: {message.get('type')}")
+    print(f"Payload: {message.get('payload')}")
+
+def on_connect(client):
+    client.subscribe({
+        "subscriptions": [
+            {"topic": "activity", "type": "*"},
+            {"topic": "crypto_prices", "type": "*", "filters": '{"symbol":"BTCUSDT"}'}
+        ]
+    })
+
+client = RealTimeDataClient(
+    on_connect=on_connect,
+    on_message=on_message,
+    auto_reconnect=True
+)
+client.connect()
+```
+
+## TypeScript Client
+
 ## How to use it
 
 Here is a quick example about how to connect to the service and start receiving messages (you can find more in the folder `examples/`):
